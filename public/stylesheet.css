@@ -4,6 +4,13 @@
 	background-size: 100%
 }
 
+.background1 {
+	background: url("https://images.pexels.com/photos/316466/pexels-photo-316466.jpeg?w=940&h=650&auto=compress&cs=tinysrgb");
+	background-repeat: no-repeat;
+	background-size: 100%;
+}
+
+
 .text {
 	text-align: center;
 	padding-top: 225px;
@@ -26,4 +33,17 @@
 	text-align: center;
 	padding-top: 220px;
 	padding-right: 10px;
+}
+
+.text4 {
+	text-align: center;
+	padding-left: 35px;
+}
+
+.navbar {
+	text-align: center;
+}
+
+.navbar a{
+	margin-left: 20px;
 }

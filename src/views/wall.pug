@@ -1,0 +1,19 @@
+doctype html
+html
+	head
+		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css.bootstrap.min.css")
+		link(rel="stylesheet" href="stylesheet.css" type="text/css")
+	body.background1
+		div.navbar
+			a(href='./') HOME
+			a(href='./wall') WALL
+			a(href='./profile') PROFILE
+		div.text4
+			h2 post a new message:
+			form(action='/wall', method='post')
+				input(type='text', minlength='2', name='title')
+				br
+				input(resize='both', minlength='2', maxlenght='500', name='message')
+				br
+				button.btn#wall(type='submit', name='submit') submit
+

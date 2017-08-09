@@ -1,14 +1,19 @@
 doctype html
-head
-	link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
-	link(rel="stylesheet" href="stylesheet.css" type="text/css")
-body.background
-	div.text1
-		h2 welcome to the register page
-		h3 register here
-			form(action='/register', method='POST', autocomplete='off')
-				input(type='text', name='email', placeholder='enter your email')
-				br
-				input(type='password', name='password', placeholder='choose a password')
-				br
-				button.btn.btn-default#register(type='submit', value='submit') CREATE A NEW ACCOUNT
+html
+	head
+		link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+		link(rel="stylesheet" href="stylesheet.css" type="text/css")
+	body.background
+		div.navbar
+			a(href='./') HOME
+			a(href='./wall') WALL
+			a(href='./profile') PROFILE
+		div.text1
+			h2 welcome to the register page
+			h3 register here
+				form(action='/register', method='POST', autocomplete='off')
+					input(type='text', name='email', placeholder='enter your email')
+					br
+					input(type='password', name='password', placeholder='choose a password')
+					br
+					button.btn.btn-default#register(type='submit', value='submit') CREATE A NEW ACCOUNT

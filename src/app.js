@@ -36,6 +36,24 @@ const User = sequelize.define('user',{
 		timestamps:false
 	});
 
+
+const Message = sequelize.define('message',{
+	title: {
+		type: Sequelize.STRING,
+	},
+	message: {
+		type: Sequelize.STRING
+	}
+},{
+	timestamps:false
+});
+
+const Comment = sequelize.define('comment', {
+	comments: {
+		type: Sequelize.STRING
+	}
+});
+
 app.get('/', function(req,res){
 	res.render('index', {
 		message: req.query.message,
@@ -60,6 +78,31 @@ app.post('/register', (req,res)=>{
 		console.log(error)
 	})
 }); 
+
+app.post('/wall', function (req,res){
+	let sendingTitle = req.body.title;
+	let sendingMessage = req.body.message;
+
+	Message.create({
+		title: sendingTitle,
+		message: sendingMessage
+	})
+	.then((message) => {
+		req.session.message = message;
+		res.redirect('/wall');
+	}).catch((error) =>{
+		console.log(error)
+	})
+});
+
+// app.post('/message', function (req,res){
+// 	res.redirect('wall');
+// });
+
+app.get('/wall', function (req, res) {
+		res.render('wall');
+	});
+
 
 app.get('/login', function(req,res){
 	res.render('login', {user:req.session.user})
