@@ -1,0 +1,14 @@
+doctype html
+head
+	link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+	link(rel="stylesheet" href="stylesheet.css" type="text/css")
+body.background
+	div.text2
+		h1 welcome to the log in page
+		h3 log in here
+			form('/register', method='POST', autocomplete='off')
+				input(type='text', name='email', placeholder='enter your email')
+				br
+				input(type='password', name='password', placeholder='enter your password')
+				br
+				button.btn.btn-default#register(type='submit', name='submit') LOG IN

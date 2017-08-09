@@ -1,0 +1,29 @@
+.background {
+	background: url("https://images.pexels.com/photos/205316/pexels-photo-205316.png?w=940&h=650&auto=compress&cs=tinysrgb");
+	background-repeat: no-repeat;
+	background-size: 100%
+}
+
+.text {
+	text-align: center;
+	padding-top: 225px;
+	padding-right: 50px;
+}
+
+.text1 {
+	text-align: center;
+	padding-right: 10px;
+	padding-top: 220px;
+}
+
+.text2 {
+	text-align: center;
+	padding-right: 10px;
+	padding-top: 220px;
+}
+
+.text3 {
+	text-align: center;
+	padding-top: 220px;
+	padding-right: 10px;
+}

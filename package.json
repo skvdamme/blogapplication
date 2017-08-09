@@ -1,0 +1,20 @@
+{
+  "name": "blogapplication",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "express-session": "^1.15.5",
+    "express-sessions": "^1.0.6",
+    "pg": "^7.1.0",
+    "pug": "^2.0.0-rc.3",
+    "sequelize": "^4.4.2"
+  }
+}
