@@ -1,8 +1,8 @@
 doctype html
 html
 	head
-		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css.bootstrap.min.css")
-		link(rel="stylesheet" href="stylesheet.css" type="text/css")
+		link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+		link(rel="stylesheet" href="main.css" type="text/css")
 	body.background1
 		div.navbar
 			a(href='./') HOME
@@ -16,4 +16,11 @@ html
 				input(resize='both', minlength='2', maxlenght='500', name='message')
 				br
 				button.btn#wall(type='submit', name='submit') submit
-
+		div.texts
+			each message in messages
+				ul
+					li User: #{user.email}, title: #{message.title}, message: #{message.message}
+					a(href=`/post/${message.id}`) Click here to see my post 
+				each comment in message.comments
+					li Comment: #{comment.comments}
+					

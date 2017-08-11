@@ -1,14 +1,14 @@
 doctype html
 html
 	head
-		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css.bootstrap.min.css")
-		link(rel="stylesheet" href="stylesheet.css" type="text/css")
+		link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+		link(rel="stylesheet" href="main.css" type="text/css")
 	body.background
 			if user
 				div.navbar
-					a(href='./') HOME
-					a(href='./wall') WALL
-					a(href='./profile') PROFILE
+					a(href='/') HOME
+					a(href='/wall') WALL
+					a(href='/profile') PROFILE
 				div.text3
 					h3 welcome #{user.email} to your profile page
 					h3 your password is #{user.password}

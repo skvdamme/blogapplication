@@ -14,10 +14,7 @@ app.set('views', './views');
 app.set('view engine', 'pug');
 
 app.use(express.static(__dirname + "/../public"));
-console.log(__dirname);
-
 app.use(bodyParser.urlencoded({extended:true}));
-
 app.use(session({
 	secret: "whatever",
 	saveUninitialized: true,
@@ -54,6 +51,13 @@ const Comment = sequelize.define('comment', {
 	}
 });
 
+User.hasMany(Message);
+Message.belongsTo(User);
+User.hasMany(Comment);
+Comment.belongsTo(User);
+Message.hasMany(Comment);
+Comment.belongsTo(Message);
+
 app.get('/', function(req,res){
 	res.render('index', {
 		message: req.query.message,
@@ -76,32 +80,91 @@ app.post('/register', (req,res)=>{
 		res.redirect('/profile');
 	}).catch((error) =>{
 		console.log(error)
-	})
+	});
 }); 
 
 app.post('/wall', function (req,res){
+	var user = req.session.user;
+	console.log('this is my info as a user '+ user);
+
 	let sendingTitle = req.body.title;
 	let sendingMessage = req.body.message;
 
-	Message.create({
-		title: sendingTitle,
-		message: sendingMessage
-	})
-	.then((message) => {
-		req.session.message = message;
-		res.redirect('/wall');
-	}).catch((error) =>{
+	User.findOne({
+		where: {
+			email: user.email
+		}
+	}).then((user)=>{
+		return user.createMessage({
+			title: sendingTitle,
+			message: sendingMessage
+		})
+		.then(()=>{
+			res.redirect('/wall')
+		})
+		.catch((error) =>{
 		console.log(error)
-	})
+		});
+	});
 });
 
-// app.post('/message', function (req,res){
-// 	res.redirect('wall');
-// });
 
 app.get('/wall', function (req, res) {
-		res.render('wall');
+	let user = req.session.user;
+	console.log(user)
+	Message.findAll({
+		include: [{
+			model: Comment
+		}]
+	})
+	.then(function(messages) {
+	res.render('wall', {user:user, messages: messages})
 	});
+});
+
+app.get('/post/:id', (req,res)=>{
+const params = req.params
+console.log(params)
+
+	Message.findOne({
+		where: {
+			id: params.id
+		},
+			include: [{
+				model: Comment
+			}]
+		
+	})
+	.then((post)=>{
+		var message = post;
+		console.log(message)
+		res.render('post', {message:message})
+	});
+});
+
+app.post('/comment/:messageId', (req,res) => {
+	var user = req.session.user;
+	var messageId = req.params.messageId;
+	let sendingComment = req.body.comment;
+	console.log('this is my message: '+ messageId);
+
+	User.findOne({
+		where: {
+			email: user.email
+		}
+	}).then((user)=>{
+		return user.createComment({
+			comments: sendingComment,
+			messageId: messageId
+		})
+		.then(()=>{
+			res.redirect(`/post/${messageId}`)
+		})
+		.catch((error) =>{
+		console.log(error)
+		});
+	});
+});
 
 
 app.get('/login', function(req,res){
@@ -126,7 +189,6 @@ User.findOne({
 		email: email
 	}
 })
-
 .then(function(user) {
 	console.log('user email '+ user.email)
 	console.log('user password ' + user.password)
@@ -140,7 +202,7 @@ User.findOne({
 .catch(function (error) {
 	console.error(error)
 	res.redirect('/?message=' + encodeURIComponent("invalid email or password"));
-	})
+	});
 });
 
 app.get('/profile', (req,res)=>{
