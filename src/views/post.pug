@@ -1,0 +1,22 @@
+doctype html
+html
+	head
+		link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+		link(rel="stylesheet" href="main.css" type="text/css")
+	body.background1
+		div.navbar
+			a(href='/') HOME
+			a(href='/wall') WALL
+			a(href='/profile') PROFILE
+		div.posts
+			h3 Id is: #{message.id}
+			h3 Title is: #{message.title}
+			h3 Message is: #{message.message}
+			each comment in message.comments
+				h4 Comments: #{comment.comments}
+			br
+			h4 Comment over here:
+			form(action='/comment/'+message.id, method='post')
+				input(type='text', minlength='2', name='comment')
+				br
+				button.btn#post(type'submit', name='submit') submit
