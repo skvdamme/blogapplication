@@ -84,8 +84,6 @@ app.post('/register', (req,res)=>{
 			req.session.user = user;
 			res.redirect('/profile');
 		})
-		}).catch((error) =>{
-			console.log(error)
 	});
 }); 
 
