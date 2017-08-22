@@ -29,7 +29,10 @@ const User = sequelize.define('user',{
 	},
 	password: {
 		type: Sequelize.STRING
-	}
+	},
+	passwordconfirmation: {
+		type: Sequelize.STRING
+	},
 	},{
 		timestamps:false
 	});
@@ -72,20 +75,26 @@ app.get('/register', function(req,res){
 });
 
 app.post('/register', (req,res)=>{
-	var password = req.body.password
+	var password = req.body.password;
+	var passwordconfirmation = req.body.passwordconfirmation;
+	if(password !== passwordconfirmation){
+		throw new Error("password confirmation doesn't match.")
+	} else if (password === passwordconfirmation) {
 	   bcrypt.hash(password, 8, (err, hash) => {
 		if (err) throw err;
-	User.create({
+
+		User.create({
 		email: req.body.email,
-		password: hash
-	})
-		.then((user) => {
+		password: hash,
+		passwordconfirmation: hash
+		}).then((user) => {
 			console.log("User create promise returned success!")
 			req.session.user = user;
 			res.redirect('/profile');
 		})
-	});
-}); 
+	})
+	}
+});
 
 app.post('/wall', function (req,res){
 	var user = req.session.user;
@@ -235,7 +244,7 @@ app.get('/logout', (req,res)=>{
 });
 
 
-sequelize.sync();
+sequelize.sync({force: false});
 
 app.listen(3000, function(){
 	console.log('Hey is this thing on?!')
