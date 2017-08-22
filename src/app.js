@@ -9,6 +9,7 @@ const sequelize = new Sequelize('blogapplication', 'samantha_kaylee', null, {
 });
 
 const app = express();
+const bcrypt = require('bcrypt');
 
 app.set('views', './views');
 app.set('view engine', 'pug');
@@ -71,15 +72,20 @@ app.get('/register', function(req,res){
 });
 
 app.post('/register', (req,res)=>{
+	var password = req.body.password
+	   bcrypt.hash(password, 8, (err, hash) => {
+		if (err) throw err;
 	User.create({
 		email: req.body.email,
-		password: req.body.password
+		password: hash
 	})
-	.then((user) => {
-		req.session.user = user;
-		res.redirect('/profile');
-	}).catch((error) =>{
-		console.log(error)
+		.then((user) => {
+			console.log("User create promise returned success!")
+			req.session.user = user;
+			res.redirect('/profile');
+		})
+		}).catch((error) =>{
+			console.log(error)
 	});
 }); 
 
@@ -172,36 +178,41 @@ app.get('/login', function(req,res){
 });
 
 app.post('/login', function (req, res) {
-	if(req.body.email.lentgh === 0) {
+	if(req.body.email.length === 0) {
 		res.redirect('/?message=' + encodeURIComponent("please fill out your email adress"));
 	return;
 	}
 
 	if(req.body.password.length === 0) {
-		response.redirect('/?message=' + encodeURIComponent("please fill out your password"));
+		res.redirect('/?message=' + encodeURIComponent("please fill out your password"));
 		return;
 	}
 var email = req.body.email
 var password = req.body.password
+console.log(password)
 
 User.findOne({
 	where: {
 		email: email
 	}
 })
-.then(function(user) {
-	console.log('user email '+ user.email)
-	console.log('user password ' + user.password)
-	if (user != null && password === user.password) {
-		req.session.user = user;
-		res.redirect('/profile');
-	} else {
-		res.redirect('/?message=' + encodeURIComponent("invalid email or password"));
+.then((user) => {
+	if (!user){
+		res.redirect('/?message=' + encodeURIComponent("User doesn't exist."));
 	}
-  })
-.catch(function (error) {
-	console.error(error)
-	res.redirect('/?message=' + encodeURIComponent("invalid email or password"));
+	else {
+		bcrypt.compare(password, user.password, (err, res) => {
+			//console.log("entered hashed password" + password)
+			//console.log('database password'+user.password);
+			if (res) {
+				req.session.user = user;
+				res.redirect('/profile');
+			}
+			else {
+				res.redirect('/?message' + encodeURIComponent("incorrect password."));
+			}
+		})
+			}
 	});
 });
 
