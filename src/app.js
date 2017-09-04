@@ -97,7 +97,7 @@ app.post('/register', (req,res)=>{
 });
 
 app.post('/wall', function (req,res){
-	var user = req.session.user;
+	const user = req.session.user;
 	console.log('this is my info as a user '+ user);
 
 	let sendingTitle = req.body.title;
@@ -142,7 +142,9 @@ app.get('/wall', function (req, res) {
 app.get('/post/:id', (req,res)=>{
 const params = req.params
 console.log(params)
+	const user = req.session.user;
 
+	if(user) {
 	Message.findOne({
 		where: {
 			id: params.id
@@ -156,8 +158,12 @@ console.log(params)
 		var message = post;
 		console.log(message)
 		res.render('post', {message:message})
-	});
+		});
+	} else {
+		res.redirect('/?message=' + encodeURIComponent("Please login to view posts"));
+	};
 });
+
 
 app.post('/comment/:messageId', (req,res) => {
 	var user = req.session.user;

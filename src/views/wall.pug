@@ -19,9 +19,11 @@ html
 				button.btn#wall(type='submit', name='submit') submit
 		div.texts
 			each message in messages
-				ul
-					li User: #{user.email}, title: #{message.title}, message: #{message.message}
-					a(href=`/post/${message.id}`) Click here to see my post 
-				each comment in message.comments
-					li Comment: #{comment.comments}
+				each user in users
+					if message.userId === user.id
+						ul
+							li User: #{user.email}, title: #{message.title}, message: #{message.message}
+							a(href=`/post/${message.id}`) Click here to see my post 
+						each comment in message.comments
+							li #{user.email} commented: #{comment.comments}
 					
