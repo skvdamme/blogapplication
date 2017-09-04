@@ -14,8 +14,25 @@ html
 			h3 Title is: #{message.title}
 			h3 Message is: #{message.message}
 			each comment in message.comments
-				h4 Comments: #{comment.comments}
+				if comment.userId === user.id
+					h4 #{user.email} commented: #{comment.comments}
 			br
+				User.findAll()
+				.then(users => {
+					Message.findOne({
+					where: {
+						id: params.id
+					},
+						include: [{
+							model: Comment,
+						}]
+					})
+				.then((post)=>{
+					var message = post;
+					console.log(message)
+					res.render('post', {message:message, users: users})
+				}); 
+				});
 			h4 Comment over here:
 			form(action='/comment/'+message.id, method='post')
 				input(type='text', minlength='2', name='comment')

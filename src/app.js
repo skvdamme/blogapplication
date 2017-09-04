@@ -125,7 +125,10 @@ app.post('/wall', function (req,res){
 app.get('/wall', function (req, res) {
 	let user = req.session.user;
 	console.log(user)
-	Message.findAll({
+
+	User.findAll()
+	.then(users => {
+		Message.findAll ({
 		include: [{
 			model: Comment
 		}]
@@ -133,6 +136,7 @@ app.get('/wall', function (req, res) {
 	.then(function(messages) {
 	res.render('wall', {user:user, messages: messages})
 	});
+  });
 });
 
 app.get('/post/:id', (req,res)=>{
